@@ -1,0 +1,24 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "pybind11>=2.8.0",
+    "cmake>=3.12",
+
+    # use oldest-supported-numpy which provides the oldest numpy version with
+    # wheels on PyPI (it is a similar operation used in scikit-learn)
+    #
+    # see: https://github.com/scipy/oldest-supported-numpy/blob/main/setup.cfg
+    "oldest-supported-numpy"
+]
+
+build-backend = "setuptools.build_meta"
+
+# Configuration for cibuildwheel
+[tool.cibuildwheel]
+# build = "*manylinux_x86_64"
+build = "cp38-manylinux_x86_64 cp39-manylinux_x86_64"
+skip = "pp*"
+
+# install pybind11 for cmake
+before-build = "pip install pybind11[global]"

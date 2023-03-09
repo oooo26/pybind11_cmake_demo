@@ -1,0 +1,53 @@
+name: Test CIBW
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_sdist:
+    name: Build SDist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build SDist
+        run: |
+          pipx run build --sdist
+
+      - name: Check metadata
+        run: |
+          pipx run twine check dist/*
+          realpath dist/*
+
+      - uses: actions/upload-artifact@v3
+        with:
+          path: dist/*
+
+  build_wheels:
+    name: Wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: all
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.12.0
+
+      - name: Verify clean directory
+        run: git diff --exit-code
+        shell: bash
+
+      - name: Upload wheels to the project's github page
+        uses: actions/upload-artifact@v3
+        with:
+          path: wheelhouse/*.whl

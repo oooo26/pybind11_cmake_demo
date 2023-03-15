@@ -22,3 +22,6 @@ skip = "pp*"
 
 # install pybind11 for cmake
 before-build = "pip install pybind11[global]"
+
+# test
+test-command: "python {project}/test/*.py"

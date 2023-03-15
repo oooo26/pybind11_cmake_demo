@@ -74,9 +74,14 @@ jobs:
         run: ls -al dist
 
       - name: Install ABESS
+        env: 
+          pyverion: "cp${{ matrix.python-version }}"
         run: |
+          pyversion=$(echo $pyversion | sed 's/\.//')
           python -m pip install --upgrade pip
-          # pip install dist/
+          pip install "dist/demo*$pyversion*.whl"
       
       - name: Test
-        run: ls -al .
+        run: |
+          ls -al .
+          python test/test_demo.py

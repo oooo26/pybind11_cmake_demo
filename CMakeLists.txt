@@ -23,6 +23,7 @@ find_package(OpenMP)
 # sources
 SET(SOURCES
     src/demo.cpp
+    src/List.cpp
 )
 add_library(pybind_demo MODULE ${SOURCES})
 

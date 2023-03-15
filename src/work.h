@@ -3,8 +3,10 @@
 #include <typeinfo>
 #include <vector>
 #include <tuple>
-#include <omp.h>
 #include <Eigen/Eigen>
+
+#include "OpenMP.h"
+#include "List.h"
 
 using namespace std;
 using namespace Eigen;

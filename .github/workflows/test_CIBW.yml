@@ -78,8 +78,9 @@ jobs:
           pyverion: "cp${{ matrix.python-version }}"
         run: |
           pyversion=$(echo $pyversion | sed 's/\.//')
+          pkgname=$(ls dist | grep ${pyversion})
           python -m pip install --upgrade pip
-          pip install "dist/demo*$pyversion*.whl"
+          pip install "dist/${pkgname}"
       
       - name: Test
         run: |
